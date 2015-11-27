@@ -9,7 +9,6 @@ import javafx.scene.layout.BorderPane
 import javafx.scene.{Parent, Scene}
 import javafx.stage.Stage
 
-import fhj.swengb.Speakers
 
 import scala.util.control.NonFatal
 
