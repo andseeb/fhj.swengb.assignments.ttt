@@ -1,11 +1,45 @@
-.button, #result_field {
+.ttt-grid .button{
     /* maximise items (in cell) */
     -fx-max-width: Infinity;
     -fx-max-height: Infinity;
     /* font settings */
     -fx-font-size: 1.7em;
     -fx-font-weight: bold;
-    -fx-border-color: #FFF;
+    /* border settings*/
+    -fx-border-width: 0;
+    -fx-border-color: solid;
+    -fx-border-color: black;
+}
+
+
+#btn-topleft {
+    -fx-border-width: 0 2 2 0; /* top right bottom left*/
+}
+#btn-topcenter {
+    -fx-border-width: 0 2 2 2; /* top right bottom left*/
+}
+#btn-topright {
+    -fx-border-width: 0 0 2 2; /* top right bottom left*/
+}
+
+#btn-middleleft {
+    -fx-border-width: 2 2 2 0; /* top right bottom left*/
+}
+#btn-middlecenter {
+    -fx-border-width: 2 2 2 2; /* top right bottom left*/
+}
+#btn-middleright {
+    -fx-border-width: 2 0 2 2; /* top right bottom left*/
+}
+
+#btn-bottomleft {
+    -fx-border-width: 2 2 0 0; /* top right bottom left*/
+}
+#btn-bottomcenter {
+    -fx-border-width: 2 2 0 2; /* top right bottom left*/
+}
+#btn-bottomright {
+    -fx-border-width: 2 0 0 2; /* top right bottom left*/
 }
 
 
