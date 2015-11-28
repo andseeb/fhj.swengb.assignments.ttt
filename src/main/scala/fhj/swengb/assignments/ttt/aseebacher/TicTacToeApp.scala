@@ -3,7 +3,9 @@ package fhj.swengb.assignments.ttt.aseebacher
 import java.net.URL
 import java.util.ResourceBundle
 import javafx.application.Application
+import javafx.event.ActionEvent
 import javafx.fxml.{FXML, FXMLLoader, Initializable}
+import javafx.scene.control.Control
 import javafx.scene.image.{Image, ImageView}
 import javafx.scene.layout.BorderPane
 import javafx.scene.{Parent, Scene}
@@ -52,6 +54,8 @@ class TicTacToeController extends Initializable {
 
     //borderPane.setCenter(new ImageView(new Image(url)))
   }
-  def execMove(): Unit = println("button clicked")
+  def execMove(evt:ActionEvent): Unit = {
+    println(evt.getSource.asInstanceOf[Control].getId)
+  }
 
 }
