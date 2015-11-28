@@ -141,7 +141,7 @@ case class TicTacToe(moveHistory: Map[TMove, Player],
     * @param player the player
     * @return
     */
-  def turn(p: TMove, player: Player): TicTacToe = ???
+  def turn(move: TMove, player: Player): TicTacToe = ???
 
 }
 

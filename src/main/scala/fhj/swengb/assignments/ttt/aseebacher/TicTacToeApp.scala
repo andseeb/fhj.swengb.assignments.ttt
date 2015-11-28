@@ -49,13 +49,36 @@ class TicTacToeController extends Initializable {
   //@FXML var borderPane: BorderPane = _
 
   override def initialize(location: URL, resources: ResourceBundle): Unit = {
+
+
     val url: String = "about:blank"
     //val url = Students.mfuchs.gitHubUser.avatarUrl.toString
 
     //borderPane.setCenter(new ImageView(new Image(url)))
   }
+
+  //val ttt = TicTacToe()
+
+  val movesMap = Map(
+    ("btn-topleft", TopLeft),
+    ("btn-topcenter", TopCenter),
+    ("btn-topright", TopRight),
+
+    ("btn-middleleft", MiddleLeft),
+    ("btn-middlecenter", MiddleCenter),
+    ("btn-middleright", MiddleRight),
+
+    ("btn-bottomleft", BottomLeft),
+    ("btn-bottomcenter", BottomCenter),
+    ("btn-bottomright", BottomRight)
+
+  )
+
   def execMove(evt:ActionEvent): Unit = {
-    println(evt.getSource.asInstanceOf[Control].getId)
+    println(evt.getSource.asInstanceOf[Control].getId + " -> " + movesMap(evt.getSource.asInstanceOf[Control].getId))
+    // TODO: create as junit test
+
   }
 
 }
+
