@@ -44,13 +44,14 @@ class TicTacToeApp extends javafx.application.Application {
 
 
 class TicTacToeController extends Initializable {
-  @FXML var borderPane: BorderPane = _
+  //@FXML var borderPane: BorderPane = _
 
   override def initialize(location: URL, resources: ResourceBundle): Unit = {
     val url: String = "about:blank"
     //val url = Students.mfuchs.gitHubUser.avatarUrl.toString
 
-    borderPane.setCenter(new ImageView(new Image(url)))
+    //borderPane.setCenter(new ImageView(new Image(url)))
   }
+  def execMove(): Unit = println("button clicked")
 
 }

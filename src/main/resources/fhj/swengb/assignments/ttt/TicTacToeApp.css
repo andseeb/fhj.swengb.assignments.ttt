@@ -11,6 +11,10 @@
     -fx-border-color: black;
 }
 
+.ttt-grid .button:selected {
+    -fx-border-color: yellow;
+}
+
 
 #btn-topleft {
     -fx-border-width: 0 2 2 0; /* top right bottom left*/
