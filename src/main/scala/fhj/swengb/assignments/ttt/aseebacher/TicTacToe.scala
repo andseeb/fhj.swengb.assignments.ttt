@@ -210,9 +210,17 @@ case class TicTacToe(moveHistory: Map[TMove, Player],
   /**
     * is true if the game is over.
     *
-    * The game is over if either of a player wins or there is a draw.
+    * The game is over if either a player wins or there is a draw.
     */
-  val gameOver : Boolean = ???
+  val gameOver : Boolean = {
+    winner match {
+      case None => {
+        if (remainingMoves.size == 0) true // draw
+        else false
+      }
+      case Some(_) => true // a player has won
+    }
+  }
 
   /**
     * the moves which are still to be played on this tic tac toe.
@@ -224,7 +232,7 @@ case class TicTacToe(moveHistory: Map[TMove, Player],
     * games which can be derived by making the next turn. that means one of the
     * possible turns is taken and added to the set.
     */
-  lazy val nextGames: Set[TicTacToe] = ???
+  def nextGames(t:TicTacToe): Set[TicTacToe] = ???
 
   /**
     * Either there is no winner, or PlayerA or PlayerB won the game.
@@ -232,63 +240,34 @@ case class TicTacToe(moveHistory: Map[TMove, Player],
     * The set of moves contains all moves which contributed to the result.
     */
   def winner: Option[(Player, Set[TMove])] = {
-    def containsSamePlayer(field1: TMove, field2: TMove, field3: TMove): Option[Player] = {
-      if (moveHistory(field1).sign == moveHistory(field2).sign == moveHistory(field3).sign) Some(moveHistory(field1))
+    def containsSameValidPlayer(field1: TMove, field2: TMove, field3: TMove): Option[Player] = {
+      if (moveHistory(field1) != PlayerNone && moveHistory(field1).sign == moveHistory(field2).sign == moveHistory(field3).sign) {
+        Some(moveHistory(field1))
+      }
       else None
     }
+    def recCheckAll(moves : Seq[TMove]) : Option[(Player, Set[TMove])]  = {
+      if (moves == Nil) None // No winner yet OR draw
+      else {
 
-    if (!gameOver) None
-    else {
-
-    }
-
-
-
-
-    if (!gameOver) None
-    else {
-
-      def recCheckAll(moves : Seq[TMove]) : Option[(Player, Set[TMove])]  = {
-        if (moves == Nil) None
-        else {
-
-          if (containsSamePlayer(moves.head.left, moves.head, moves.head.right) == Some) {
-            return Some(moveHistory(moves.head), moveHistory.filter(_._2 == moveHistory(moves.head)).keySet)
-          } else if (containsSamePlayer(moves.head.up, moves.head, moves.head.down) == Some) {
-            return Some(moveHistory(moves.head), moveHistory.filter(_._2 == moveHistory(moves.head)).keySet)
-          } else if (containsSamePlayer(moves.head.up.left, moves.head, moves.head.down.right) == Some) {
-            return Some(moveHistory(moves.head), moveHistory.filter(_._2 == moveHistory(moves.head)).keySet)
-          } else if (containsSamePlayer(moves.head.up.right, moves.head, moves.head.down.left) == Some) {
-            return Some(moveHistory(moves.head), moveHistory.filter(_._2 == moveHistory(moves.head)).keySet)
-          } else {
-            recCheckAll(???)
-          }
-
-
+        if (containsSameValidPlayer(moves.head.left, moves.head, moves.head.right) == Some) {
+          Some(moveHistory(moves.head), moveHistory.filter(_._2 == moveHistory(moves.head)).keySet)
+        } else if (containsSameValidPlayer(moves.head.up, moves.head, moves.head.down) == Some) {
+          Some(moveHistory(moves.head), moveHistory.filter(_._2 == moveHistory(moves.head)).keySet)
+        } else if (containsSameValidPlayer(moves.head.up.left, moves.head, moves.head.down.right) == Some) {
+          Some(moveHistory(moves.head), moveHistory.filter(_._2 == moveHistory(moves.head)).keySet)
+        } else if (containsSameValidPlayer(moves.head.up.right, moves.head, moves.head.down.left) == Some) {
+          Some(moveHistory(moves.head), moveHistory.filter(_._2 == moveHistory(moves.head)).keySet)
+        } else {
+          recCheckAll(moves.tail)
         }
-      }
-
-
-      for (firstLevelCell <- Seq(TopLeft, TopCenter, TopRight, MiddleLeft, BottomLeft)) {
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
       }
     }
 
-
+    if (moveHistory.size <= 4) None
+    else recCheckAll(moveHistory.keySet.filter((a:TMove) => Seq(TopLeft, TopCenter, TopRight, MiddleLeft, BottomLeft).contains(a)).toList)
 
 
 
