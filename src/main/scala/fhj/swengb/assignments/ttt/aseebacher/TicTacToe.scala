@@ -233,7 +233,9 @@ case class TicTacToe(moveHistory: Map[TMove, Player],
     * games which can be derived by making the next turn. that means one of the
     * possible turns is taken and added to the set.
     */
-  val nextGames: Set[TicTacToe] = ???
+  val nextGames: Set[TicTacToe] = {
+    remainingMoves.map((move:TMove) => (TicTacToe(moveHistory + (move -> nextPlayer), nextPlayer.switch)))
+  }
 
   /**
     * Either there is no winner, or PlayerA or PlayerB won the game.
@@ -268,7 +270,7 @@ case class TicTacToe(moveHistory: Map[TMove, Player],
     }
 
     if (moveHistory.size <= 4) None
-    else recCheckAll(moveHistory.keySet.filter((a:TMove) => Seq(TopLeft, TopCenter, TopRight, MiddleLeft, BottomLeft).contains(a)).toList)
+    else recCheckAll(moveHistory.keySet.filter((move:TMove) => Seq(TopLeft, TopCenter, TopRight, MiddleLeft, BottomLeft).contains(move)).toList)
 
 
 
