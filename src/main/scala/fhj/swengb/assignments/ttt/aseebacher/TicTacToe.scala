@@ -137,6 +137,7 @@ object TicTacToe {
 
   /**
     * For a given tic tac toe game, this function applies all moves to the game.
+    * The first element of the sequence is also the first move.
     *
     * @param t
     * @param moves
@@ -228,11 +229,11 @@ case class TicTacToe(moveHistory: Map[TMove, Player],
   val remainingMoves: Set[TMove] = moveHistory.filter(_._2 == PlayerNone).keySet
 
   /**
-    * given a tic tac toe game, this function returns all
+    * Takes the TicTacToe game and returns all
     * games which can be derived by making the next turn. that means one of the
     * possible turns is taken and added to the set.
     */
-  def nextGames(t:TicTacToe): Set[TicTacToe] = ???
+  val nextGames: Set[TicTacToe] = ???
 
   /**
     * Either there is no winner, or PlayerA or PlayerB won the game.
