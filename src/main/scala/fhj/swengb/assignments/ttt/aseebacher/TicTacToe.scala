@@ -21,72 +21,72 @@ case object TopLeft extends TMove {
   override def idx: Int = 0
   override def up: TMove = BottomLeft
   override def down: TMove = MiddleLeft
-  override def left: TMove = ???
-  override def right: TMove = ???
+  override def left: TMove = TopRight
+  override def right: TMove = TopCenter
 }
 
 case object TopCenter extends TMove {
   override def idx: Int = 1
-  override def up: TMove = ???
-  override def down: TMove = ???
-  override def left: TMove = ???
-  override def right: TMove = ???
+  override def up: TMove = BottomCenter
+  override def down: TMove = MiddleCenter
+  override def left: TMove = TopLeft
+  override def right: TMove = TopRight
 }
 
 case object TopRight extends TMove {
   override def idx: Int = 2
-  override def up: TMove = ???
-  override def down: TMove = ???
-  override def left: TMove = ???
-  override def right: TMove = ???
+  override def up: TMove = BottomRight
+  override def down: TMove = MiddleRight
+  override def left: TMove = TopCenter
+  override def right: TMove = TopLeft
 }
 
 case object MiddleLeft extends TMove {
   override def idx: Int = 3
-  override def up: TMove = ???
-  override def down: TMove = ???
-  override def left: TMove = ???
-  override def right: TMove = ???
+  override def up: TMove = TopLeft
+  override def down: TMove = BottomLeft
+  override def left: TMove = MiddleRight
+  override def right: TMove = MiddleCenter
 }
 
 case object MiddleCenter extends TMove {
   override def idx: Int = 4
-  override def up: TMove = ???
-  override def down: TMove = ???
-  override def left: TMove = ???
-  override def right: TMove = ???
+  override def up: TMove = TopCenter
+  override def down: TMove = BottomCenter
+  override def left: TMove = MiddleLeft
+  override def right: TMove = MiddleRight
 }
 
 case object MiddleRight extends TMove {
   override def idx: Int = 5
-  override def up: TMove = ???
-  override def down: TMove = ???
-  override def left: TMove = ???
-  override def right: TMove = ???
+  override def up: TMove = TopRight
+  override def down: TMove = BottomRight
+  override def left: TMove = MiddleCenter
+  override def right: TMove = MiddleLeft
 }
 
 case object BottomLeft extends TMove {
   override def idx: Int = 6
-  override def up: TMove = ???
-  override def down: TMove = ???
-  override def left: TMove = ???
-  override def right: TMove = ???
+  override def up: TMove = MiddleLeft
+  override def down: TMove = TopLeft
+  override def left: TMove = BottomRight
+  override def right: TMove = BottomCenter
 }
 
 case object BottomCenter extends TMove {
   override def idx: Int = 7
-  override def up: TMove = ???
-  override def down: TMove = ???
-  override def left: TMove = ???
-  override def right: TMove = ???
+  override def up: TMove = MiddleCenter
+  override def down: TMove = TopCenter
+  override def left: TMove = BottomLeft
+  override def right: TMove = BottomRight
 }
 
 case object BottomRight extends TMove {
   override def idx: Int = 8
-  override def up: TMove = ???
-  override def down: TMove = ???
-  override def left: TMove = ???
-  override def right: TMove = ???
+  override def up: TMove = MiddleRight
+  override def down: TMove = TopRight
+  override def left: TMove = BottomCenter
+  override def right: TMove = BottomLeft
 }
 
 
@@ -232,12 +232,66 @@ case class TicTacToe(moveHistory: Map[TMove, Player],
     * The set of moves contains all moves which contributed to the result.
     */
   def winner: Option[(Player, Set[TMove])] = {
+    def containsSamePlayer(field1: TMove, field2: TMove, field3: TMove): Option[Player] = {
+      if (moveHistory(field1).sign == moveHistory(field2).sign == moveHistory(field3).sign) Some(moveHistory(field1))
+      else None
+    }
+
     if (!gameOver) None
     else {
+
+    }
+
+
+
+
+    if (!gameOver) None
+    else {
+
+      def recCheckAll(moves : Seq[TMove]) : Option[(Player, Set[TMove])]  = {
+        if (moves == Nil) None
+        else {
+
+          if (containsSamePlayer(moves.head.left, moves.head, moves.head.right) == Some) {
+            return Some(moveHistory(moves.head), moveHistory.filter(_._2 == moveHistory(moves.head)).keySet)
+          } else if (containsSamePlayer(moves.head.up, moves.head, moves.head.down) == Some) {
+            return Some(moveHistory(moves.head), moveHistory.filter(_._2 == moveHistory(moves.head)).keySet)
+          } else if (containsSamePlayer(moves.head.up.left, moves.head, moves.head.down.right) == Some) {
+            return Some(moveHistory(moves.head), moveHistory.filter(_._2 == moveHistory(moves.head)).keySet)
+          } else if (containsSamePlayer(moves.head.up.right, moves.head, moves.head.down.left) == Some) {
+            return Some(moveHistory(moves.head), moveHistory.filter(_._2 == moveHistory(moves.head)).keySet)
+          } else {
+            recCheckAll(???)
+          }
+
+
+        }
+      }
+
+
       for (firstLevelCell <- Seq(TopLeft, TopCenter, TopRight, MiddleLeft, BottomLeft)) {
-        for (secondLevel <- )
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
       }
     }
+
+
+
+
+
   }
 
   /**
