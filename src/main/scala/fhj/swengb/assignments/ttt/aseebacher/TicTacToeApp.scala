@@ -5,7 +5,7 @@ import java.util.ResourceBundle
 import javafx.application.Application
 import javafx.event.ActionEvent
 import javafx.fxml.{FXML, FXMLLoader, Initializable}
-import javafx.scene.control.Control
+import javafx.scene.control.{Button, Control}
 import javafx.scene.image.{Image, ImageView}
 import javafx.scene.layout.BorderPane
 import javafx.scene.{Parent, Scene}
@@ -49,6 +49,7 @@ class TicTacToeApp extends javafx.application.Application {
 
 class TicTacToeController extends Initializable {
   //@FXML var borderPane: BorderPane = _
+  var TTTInstance = TicTacToe()
 
   override def initialize(location: URL, resources: ResourceBundle): Unit = {
 
@@ -77,8 +78,16 @@ class TicTacToeController extends Initializable {
   )
 
   def execMove(evt:ActionEvent): Unit = {
-    println(evt.getSource.asInstanceOf[Control].getId + " -> " + movesMap(evt.getSource.asInstanceOf[Control].getId))
+    println(evt.getSource.asInstanceOf[Button].getId + " -> " + movesMap(evt.getSource.asInstanceOf[Button].getId))
     // TODO: create as junit test
+
+    TTTInstance = TTTInstance.turn(movesMap(evt.getSource.asInstanceOf[Button].getId), TTTInstance.nextPlayer)
+    evt.getSource.asInstanceOf[Button].setDisable(true)
+    evt.getSource.asInstanceOf[Button].getStyleClass.add(TTTInstance.nextPlayer.switch.toString) // nextPlayer.switch = Spieler, der gerade dran war
+    println("'" + evt.getSource.asInstanceOf[Button].getStyleClass.toArray.toList.mkString(",") + "'")
+    println(TTTInstance.moveHistory)
+    println("has won: " + TTTInstance.winner.getOrElse("no"))
+    println("game over: " + TTTInstance.gameOver)
 
   }
 

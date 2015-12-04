@@ -11,10 +11,22 @@
     -fx-border-color: black;
 }
 
-.ttt-grid .button:selected {
-    -fx-border-color: yellow;
+.PlayerA:disabled {
+    -fx-background-image: url("/fhj/swengb/assignments/ttt/cross.png");
+    -fx-background-size: 65% 65%;
+    -fx-background-repeat: no-repeat, no-repeat;
+    -fx-background-position: center;
+    -fx-opacity: 1;
 }
 
+
+.PlayerB:disabled {
+    -fx-background-image: url("/fhj/swengb/assignments/ttt/circle.png");
+    -fx-background-size: 65% 65%;
+    -fx-background-repeat: no-repeat, no-repeat;
+    -fx-background-position: center;
+    -fx-opacity: 1;
+}
 
 #btn-topleft {
     -fx-border-width: 0 2 2 0; /* top right bottom left*/

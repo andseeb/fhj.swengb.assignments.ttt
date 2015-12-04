@@ -169,7 +169,8 @@ object TicTacToe {
     *
     * @return
     */
-  lazy val possibleGames: Map[Seq[TMove], TicTacToe] = ???
+  //lazy val possibleGames: Map[Seq[TMove], TicTacToe] = BoardGenerator.generatePossibleEndStates.map(boardState => Map(TicTacToe(boardState).remainingMoves.toSeq -> TicTacToe(boardState)))
+  lazy val possibleGames: Set[TicTacToe] = BoardGenerator.generatePossibleEndStates
 
 }
 
@@ -214,7 +215,7 @@ case class TicTacToe(moveHistory: Map[TMove, Player],
     *
     * The game is over if either a player wins or there is a draw.
     */
-  val gameOver : Boolean = {
+  lazy val gameOver : Boolean = { // is set as "lazy" so that it can access "remainingMoves"
     winner match {
       case None => {
         if (remainingMoves.isEmpty) true // draw
@@ -245,7 +246,7 @@ case class TicTacToe(moveHistory: Map[TMove, Player],
     */
   def winner: Option[(Player, Set[TMove])] = {
     def containsSameValidPlayer(field1: TMove, field2: TMove, field3: TMove): Option[Player] = {
-      if (moveHistory(field1) != PlayerNone && (moveHistory(field1).sign == moveHistory(field2).sign == moveHistory(field3).sign)) {
+      if (moveHistory(field1) != PlayerNone && moveHistory(field1).sign == moveHistory(field2).sign && moveHistory(field1).sign == moveHistory(field3).sign) {
         Some(moveHistory(field1))
       }
       else None
@@ -254,13 +255,13 @@ case class TicTacToe(moveHistory: Map[TMove, Player],
       if (moves == Nil) None // No winner yet OR draw
       else {
 
-        if (containsSameValidPlayer(moves.head.left, moves.head, moves.head.right) == Some) {
+        if (containsSameValidPlayer(moves.head.left, moves.head, moves.head.right).isDefined) {
           Some(moveHistory(moves.head), moveHistory.filter(_._2 == moveHistory(moves.head)).keySet)
-        } else if (containsSameValidPlayer(moves.head.up, moves.head, moves.head.down) == Some) {
+        } else if (containsSameValidPlayer(moves.head.up, moves.head, moves.head.down).isDefined) {
           Some(moveHistory(moves.head), moveHistory.filter(_._2 == moveHistory(moves.head)).keySet)
-        } else if (containsSameValidPlayer(moves.head.up.left, moves.head, moves.head.down.right) == Some) {
+        } else if (containsSameValidPlayer(moves.head.up.left, moves.head, moves.head.down.right).isDefined) {
           Some(moveHistory(moves.head), moveHistory.filter(_._2 == moveHistory(moves.head)).keySet)
-        } else if (containsSameValidPlayer(moves.head.up.right, moves.head, moves.head.down.left) == Some) {
+        } else if (containsSameValidPlayer(moves.head.up.right, moves.head, moves.head.down.left).isDefined) {
           Some(moveHistory(moves.head), moveHistory.filter(_._2 == moveHistory(moves.head)).keySet)
         } else {
           recCheckAll(moves.tail)
