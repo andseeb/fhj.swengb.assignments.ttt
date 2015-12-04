@@ -93,7 +93,8 @@ case object BottomRight extends TMove {
 /**
   * for a tic tac toe game, there are two players, player A and player B
   */
-sealed trait Player {
+// TODO: readd sealed keyword
+trait Player {
   def switch() : Player
   val sign: String
 }
@@ -199,13 +200,13 @@ case class TicTacToe(moveHistory: Map[TMove, Player],
 
     val gridLine = s"|---|---|---|$Properties.lineSeparator"
 
-    ( gridLine +
-      s"| ${moveHistory(TopLeft).sign} | ${moveHistory(TopCenter).sign} | ${moveHistory(TopRight).sign} |$Properties.lineSeparator" +
-      gridLine +
-      s"| ${moveHistory(MiddleLeft).sign} | ${moveHistory(MiddleCenter).sign} | ${moveHistory(MiddleRight).sign} |$Properties.lineSeparator" +
-      gridLine +
-      s"| ${moveHistory(BottomLeft).sign} | ${moveHistory(BottomCenter).sign} | ${moveHistory(BottomRight).sign} |$Properties.lineSeparator" +
-      gridLine)
+    gridLine +
+    s"| ${moveHistory(TopLeft).sign} | ${moveHistory(TopCenter).sign} | ${moveHistory(TopRight).sign} |$Properties.lineSeparator" +
+    gridLine +
+    s"| ${moveHistory(MiddleLeft).sign} | ${moveHistory(MiddleCenter).sign} | ${moveHistory(MiddleRight).sign} |$Properties.lineSeparator" +
+    gridLine +
+    s"| ${moveHistory(BottomLeft).sign} | ${moveHistory(BottomCenter).sign} | ${moveHistory(BottomRight).sign} |$Properties.lineSeparator" +
+    gridLine
   }
 
   /**
@@ -216,7 +217,7 @@ case class TicTacToe(moveHistory: Map[TMove, Player],
   val gameOver : Boolean = {
     winner match {
       case None => {
-        if (remainingMoves.size == 0) true // draw
+        if (remainingMoves.isEmpty) true // draw
         else false
       }
       case Some(_) => true // a player has won
@@ -234,7 +235,7 @@ case class TicTacToe(moveHistory: Map[TMove, Player],
     * possible turns is taken and added to the set.
     */
   val nextGames: Set[TicTacToe] = {
-    remainingMoves.map((move:TMove) => (TicTacToe(moveHistory + (move -> nextPlayer), nextPlayer.switch)))
+    remainingMoves.map((move:TMove) => TicTacToe(moveHistory + (move -> nextPlayer), nextPlayer.switch))
   }
 
   /**
@@ -244,7 +245,7 @@ case class TicTacToe(moveHistory: Map[TMove, Player],
     */
   def winner: Option[(Player, Set[TMove])] = {
     def containsSameValidPlayer(field1: TMove, field2: TMove, field3: TMove): Option[Player] = {
-      if (moveHistory(field1) != PlayerNone && moveHistory(field1).sign == moveHistory(field2).sign == moveHistory(field3).sign) {
+      if (moveHistory(field1) != PlayerNone && (moveHistory(field1).sign == moveHistory(field2).sign == moveHistory(field3).sign)) {
         Some(moveHistory(field1))
       }
       else None

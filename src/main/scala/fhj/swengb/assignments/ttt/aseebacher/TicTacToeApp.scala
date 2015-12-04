@@ -10,6 +10,8 @@ import javafx.scene.image.{Image, ImageView}
 import javafx.scene.layout.BorderPane
 import javafx.scene.{Parent, Scene}
 import javafx.stage.Stage
+import fhj.swengb.assignments.ttt.aseebacher
+import fhj.swengb.assignments.ttt.aseebacher.TMove
 
 
 import scala.util.control.NonFatal
