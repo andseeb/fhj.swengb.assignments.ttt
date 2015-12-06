@@ -258,7 +258,17 @@ case class TicTacToe(moveHistory: Map[TMove, Player],
       }
       else None
     }
+    def diagonalMoves(move:TMove) : (TMove, TMove) = {
+      move match {
+        case TopLeft => (MiddleCenter, BottomRight)
+        case TopRight => (MiddleCenter, BottomLeft)
+        case BottomLeft => (TopRight, MiddleCenter)
+      }
+    }
     def recCheckAll(moves : Seq[TMove]) : Option[(Player, Set[TMove])]  = {
+
+      assert(moves.contains(MiddleCenter) == false && moves.contains(MiddleRight) == false &&
+        moves.contains(BottomCenter) == false && moves.contains(BottomRight) == false)
       if (moves == Nil) None // No winner yet OR draw
       else {
 
@@ -266,10 +276,14 @@ case class TicTacToe(moveHistory: Map[TMove, Player],
           Some(moveHistory(moves.head), moveHistory.filter(_._2 == moveHistory(moves.head)).keySet)
         } else if (containsSameValidPlayer(moves.head.up, moves.head, moves.head.down).isDefined) {
           Some(moveHistory(moves.head), moveHistory.filter(_._2 == moveHistory(moves.head)).keySet)
-        } else if (containsSameValidPlayer(moves.head.up.left, moves.head, moves.head.down.right).isDefined) {
+
+
+
+        } else if ((moves.head == TopLeft | moves.head == TopRight | moves.head == BottomLeft) && containsSameValidPlayer(moves.head, diagonalMoves(moves.head)._1, diagonalMoves(moves.head)._2).isDefined) {
           Some(moveHistory(moves.head), moveHistory.filter(_._2 == moveHistory(moves.head)).keySet)
-        } else if (containsSameValidPlayer(moves.head.up.right, moves.head, moves.head.down.left).isDefined) {
-          Some(moveHistory(moves.head), moveHistory.filter(_._2 == moveHistory(moves.head)).keySet)
+
+
+
         } else {
           recCheckAll(moves.tail)
         }
@@ -279,7 +293,12 @@ case class TicTacToe(moveHistory: Map[TMove, Player],
     }
 
     if (moveHistory.size <= 4) None
-    else recCheckAll(moveHistory.keySet.filter((move:TMove) => Seq(TopLeft, TopCenter, TopRight, MiddleLeft, BottomLeft).contains(move)).toList)
+    else {
+      val importantMoves = moveHistory.keySet.filter((move:TMove) => Seq(TopLeft, TopCenter, TopRight, MiddleLeft, BottomLeft).contains(move)).toList
+      assert(importantMoves.contains(MiddleCenter) == false && importantMoves.contains(MiddleRight) == false &&
+        importantMoves.contains(BottomCenter) == false && importantMoves.contains(BottomRight) == false)
+      recCheckAll(importantMoves)
+    }
 
 
 

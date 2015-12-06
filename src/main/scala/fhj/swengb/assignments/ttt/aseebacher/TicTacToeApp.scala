@@ -118,7 +118,14 @@ class TicTacToeController extends Initializable {
     // player input
     if (!tttInstance.gameOver) tttInstance = execMove(movesMap(evt.getSource.asInstanceOf[Button].getId), tttInstance, evt.getSource.asInstanceOf[Button])
     // AI magic
-    if (!tttInstance.gameOver) tttInstance = execMove(tttInstance.remainingMoves.head, tttInstance, convertMoveToButton(tttInstance.remainingMoves.head))
+    if (!tttInstance.gameOver) tttInstance = execMove(findMove(tttInstance), tttInstance, convertMoveToButton(findMove(tttInstance)))
+
+    if (tttInstance.winner.isDefined) {
+      // TODO: einfärben
+    }
+    if (tttInstance.gameOver) {
+      // TODO: reset button
+    }
 
 
 
@@ -143,8 +150,7 @@ class TicTacToeController extends Initializable {
     //TicTacToe.mkGames().filter()
 
 
-    TopLeft
-
+    tttInstance.remainingMoves.head
   }
 
 }
