@@ -1,6 +1,8 @@
 package fhj.swengb.assignments.ttt.aseebacher
 
 
+import fhj.swengb.assignments.ttt.aseebacher
+
 import scala.collection.Set
 import util.Properties
 
@@ -169,9 +171,14 @@ object TicTacToe {
     *
     * @return
     */
-  //lazy val possibleGames: Map[Seq[TMove], TicTacToe] = BoardGenerator.generatePossibleEndStates.map(boardState => Map(TicTacToe(boardState).remainingMoves.toSeq -> TicTacToe(boardState)))
-  lazy val possibleGames: Set[TicTacToe] = BoardGenerator.generatePossibleEndStates
+  //lazy val possibleGames: Map[Seq[TMove], TicTacToe] = BoardGenerator.generatePossibleEndStates.map(boardState => Map(boardState.remainingMoves.toSeq -> boardState))
+  //lazy val possibleGames: Set[TicTacToe] = BoardGenerator.generatePossibleEndStates
 
+
+
+
+  // def generatePossibleEndStates() : Set[Map[TMove, Player]] = {
+  def mkGames(): Map[Seq[TMove], TicTacToe] = BoardGenerator.generateGames()
 }
 
 /**

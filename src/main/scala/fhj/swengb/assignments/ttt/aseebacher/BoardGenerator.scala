@@ -3,6 +3,7 @@ package fhj.swengb.assignments.ttt.aseebacher
 import javafx.application.Application
 
 import scala.annotation.tailrec
+import scala.collection.Set
 
 /**
   * Created by Andreas on 04.12.2015.
@@ -45,7 +46,7 @@ object BoardGenerator {
 
 
 
-  def generatePossibleEndStates() : Set[TicTacToe] = {
+  def generatePossibleEndStates() : Set[Map[TMove, Player]] = {
     mergeSets(
       Set(
         calcPermutatedBoards(Seq(PlayerNone, PlayerNone, PlayerNone, PlayerNone, PlayerA, PlayerA, PlayerA, PlayerB, PlayerB)), // 4xNone, 3xA, 2xB
@@ -54,24 +55,35 @@ object BoardGenerator {
         calcPermutatedBoards(Seq(PlayerNone, PlayerA, PlayerA, PlayerA, PlayerA, PlayerB, PlayerB, PlayerB, PlayerB)), // 1xNone, 4xA, 4xB
         calcPermutatedBoards(Seq(PlayerA, PlayerA, PlayerA, PlayerA, PlayerA, PlayerB, PlayerB, PlayerB, PlayerB)) // 0xNone, 5xA, 4xB
       )
-    ).map(state => TicTacToe(state))
+    )//.map(state => TicTacToe(state))
+  }
+
+  def generateGames() : Map[Seq[TMove], TicTacToe] = {
+    def recMergeAndConvert(entriesLeft:Set[Map[TMove, Player]], curMap:Map[Seq[TMove], TicTacToe] ) : Map[Seq[TMove], TicTacToe] = {
+      if (entriesLeft == Nil) curMap
+      else recMergeAndConvert(entriesLeft.tail, curMap+(entriesLeft.head.filter(_._2 != PlayerNone).keySet.toSeq->TicTacToe(entriesLeft.head)))
+    }
+
+    recMergeAndConvert(generatePossibleEndStates(), Map[Seq[TMove], TicTacToe]())
   }
 
   def main(args: Array[String]) {
-    println(generatePossibleEndStates.mkString("\r\n"))
-    println(generatePossibleEndStates().size)
+    println(generatePossibleEndStates.map(state => TicTacToe(state)).mkString("\r\n"))
+    println(generatePossibleEndStates.map(state => TicTacToe(state)).size)
 
 
 
-    println(generatePossibleEndStates.filter(_.winner.isDefined).filter(_.winner.get._1 == PlayerA))
-    println(generatePossibleEndStates.filter(_.winner.isDefined).filter(_.winner.get._1 == PlayerA).size)
+    println(generatePossibleEndStates.map(state => TicTacToe(state)).filter(_.winner.isDefined).filter(_.winner.get._1 == PlayerA))
+    println(generatePossibleEndStates.map(state => TicTacToe(state)).filter(_.winner.isDefined).filter(_.winner.get._1 == PlayerA).size)
 
 
-    println(generatePossibleEndStates.filter(_.winner.isDefined).filter(_.winner.get._1 == PlayerB))
-    println(generatePossibleEndStates.filter(_.winner.isDefined).filter(_.winner.get._1 == PlayerB).size)
+    println(generatePossibleEndStates.map(state => TicTacToe(state)).filter(_.winner.isDefined).filter(_.winner.get._1 == PlayerB))
+    println(generatePossibleEndStates.map(state => TicTacToe(state)).filter(_.winner.isDefined).filter(_.winner.get._1 == PlayerB).size)
 
-    println(generatePossibleEndStates.filter(_.winner.isDefined).filter(_.winner.isDefined).filter(_.winner.get._1 == PlayerNone))
-    println(generatePossibleEndStates.filter(_.winner.isDefined).filter(_.winner.get._1 == PlayerNone).size)
+    println(generatePossibleEndStates.map(state => TicTacToe(state)).filter(_.winner.isDefined).filter(_.winner.isDefined).filter(_.winner.get._1 == PlayerNone))
+    println(generatePossibleEndStates.map(state => TicTacToe(state)).filter(_.winner.isDefined).filter(_.winner.get._1 == PlayerNone).size)
+
+    println("test\ntest")
   }
 }
 

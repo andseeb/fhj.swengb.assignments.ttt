@@ -48,8 +48,18 @@ class TicTacToeApp extends javafx.application.Application {
 
 
 class TicTacToeController extends Initializable {
-  //@FXML var borderPane: BorderPane = _
-  var TTTInstance = TicTacToe()
+  @FXML var BtnTopLeft : Button = _
+  @FXML var BtnTopCenter : Button = _
+  @FXML var BtnTopRight : Button = _
+  @FXML var BtnMiddleLeft : Button = _
+  @FXML var BtnMiddleCenter : Button = _
+  @FXML var BtnMiddleRight : Button = _
+  @FXML var BtnBottomLeft : Button = _
+  @FXML var BtnBottomCenter : Button = _
+  @FXML var BtnBottomRight : Button = _
+  
+  
+  var tttInstance = TicTacToe()
 
   override def initialize(location: URL, resources: ResourceBundle): Unit = {
 
@@ -76,18 +86,64 @@ class TicTacToeController extends Initializable {
     ("btn-bottomright", BottomRight)
 
   )
+  // TODO : figure out why this doesn't work
+  val buttonMap = Map(
+    (TopLeft, BtnTopLeft),
+    (TopCenter, BtnTopCenter),
+    (TopRight, BtnTopRight),
+    (MiddleLeft, BtnMiddleLeft),
+    (MiddleCenter, BtnMiddleCenter),
+    (MiddleRight, BtnMiddleRight),
+    (BottomLeft, BtnBottomLeft),
+    (BottomCenter, BtnBottomCenter),
+    (BottomRight, BtnBottomRight)
+  )
+  def convertMoveToButton(move:TMove): Button = {
+    if (move == TopLeft) BtnTopLeft
+    else if (move == TopCenter) BtnTopCenter
+    else if (move == TopRight) BtnTopRight
+    else if (move == MiddleLeft) BtnMiddleLeft
+    else if (move == MiddleCenter) BtnMiddleCenter
+    else if (move == MiddleRight) BtnMiddleRight
+    else if (move == BottomLeft) BtnBottomLeft
+    else if (move == BottomCenter) BtnBottomCenter
+    else if (move == BottomRight) BtnBottomRight
+    else {
+      assert(false) // TODO: throw exception instead
+      BtnTopLeft
+    }
+  }
 
-  def execMove(evt:ActionEvent): Unit = {
+  def processClick(evt:ActionEvent): Unit = {
+    // player input
+    if (!tttInstance.gameOver) tttInstance = execMove(movesMap(evt.getSource.asInstanceOf[Button].getId), tttInstance, evt.getSource.asInstanceOf[Button])
+    // AI magic
+    if (!tttInstance.gameOver) tttInstance = execMove(tttInstance.remainingMoves.head, tttInstance, convertMoveToButton(tttInstance.remainingMoves.head))
+
+
+
     println(evt.getSource.asInstanceOf[Button].getId + " -> " + movesMap(evt.getSource.asInstanceOf[Button].getId))
     // TODO: create as junit test
-
-    TTTInstance = TTTInstance.turn(movesMap(evt.getSource.asInstanceOf[Button].getId), TTTInstance.nextPlayer)
-    evt.getSource.asInstanceOf[Button].setDisable(true)
-    evt.getSource.asInstanceOf[Button].getStyleClass.add(TTTInstance.nextPlayer.switch.toString) // nextPlayer.switch = Spieler, der gerade dran war
     println("'" + evt.getSource.asInstanceOf[Button].getStyleClass.toArray.toList.mkString(",") + "'")
-    println(TTTInstance.moveHistory)
-    println("has won: " + TTTInstance.winner.getOrElse("no"))
-    println("game over: " + TTTInstance.gameOver)
+    println(tttInstance.moveHistory)
+    println("has won: " + tttInstance.winner.getOrElse("no"))
+    println("game over: " + tttInstance.gameOver)
+
+  }
+
+  def execMove(move: TMove, tttInstance: TicTacToe, button: Button) : TicTacToe = {
+    button.setDisable(true)
+    button.getStyleClass.add(tttInstance.nextPlayer.toString)
+    tttInstance.turn(move, tttInstance.nextPlayer)
+  }
+
+  def findMove(tttInstance: TicTacToe): TMove = {
+
+    //def mkGames(): Map[Seq[TMove], TicTacToe]
+    //TicTacToe.mkGames().filter()
+
+
+    TopLeft
 
   }
 

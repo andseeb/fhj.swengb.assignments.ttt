@@ -21,15 +21,15 @@
           <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
         </rowConstraints>
          <children>
-            <Button id="btn-topleft" fx:id="BtnTopLeft" mnemonicParsing="false" onAction="#execMove" />
-            <Button id="btn-topcenter" fx:id="BtnTopCenter" mnemonicParsing="false" onAction="#execMove" GridPane.columnIndex="1" />
-            <Button id="btn-topright" fx:id="BtnTopRight" mnemonicParsing="false" onAction="#execMove" GridPane.columnIndex="2" />
-            <Button id="btn-middleleft" fx:id="BtnMiddleLeft" mnemonicParsing="false" onAction="#execMove" GridPane.rowIndex="1" />
-            <Button id="btn-middlecenter" fx:id="BtnMiddleCenter" mnemonicParsing="false" onAction="#execMove" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-            <Button id="btn-middleright" fx:id="BtnMiddleRight" mnemonicParsing="false" onAction="#execMove" GridPane.columnIndex="2" GridPane.rowIndex="1" />
-            <Button id="btn-bottomleft" fx:id="BtnBottomLeft" mnemonicParsing="false" onAction="#execMove" GridPane.rowIndex="2" />
-            <Button id="btn-bottomcenter" fx:id="BtnBottomCenter" mnemonicParsing="false" onAction="#execMove" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-            <Button id="btn-bottomright" fx:id="BtnBottomRight" mnemonicParsing="false" onAction="#execMove" GridPane.columnIndex="2" GridPane.rowIndex="2" />
+            <Button id="btn-topleft" fx:id="BtnTopLeft" mnemonicParsing="false" onAction="#processClick" />
+            <Button id="btn-topcenter" fx:id="BtnTopCenter" mnemonicParsing="false" onAction="#processClick" GridPane.columnIndex="1" />
+            <Button id="btn-topright" fx:id="BtnTopRight" mnemonicParsing="false" onAction="#processClick" GridPane.columnIndex="2" />
+            <Button id="btn-middleleft" fx:id="BtnMiddleLeft" mnemonicParsing="false" onAction="#processClick" GridPane.rowIndex="1" />
+            <Button id="btn-middlecenter" fx:id="BtnMiddleCenter" mnemonicParsing="false" onAction="#processClick" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+            <Button id="btn-middleright" fx:id="BtnMiddleRight" mnemonicParsing="false" onAction="#processClick" GridPane.columnIndex="2" GridPane.rowIndex="1" />
+            <Button id="btn-bottomleft" fx:id="BtnBottomLeft" mnemonicParsing="false" onAction="#processClick" GridPane.rowIndex="2" />
+            <Button id="btn-bottomcenter" fx:id="BtnBottomCenter" mnemonicParsing="false" onAction="#processClick" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+            <Button id="btn-bottomright" fx:id="BtnBottomRight" mnemonicParsing="false" onAction="#processClick" GridPane.columnIndex="2" GridPane.rowIndex="2" />
          </children>
       </GridPane>
    </center>
