@@ -1,13 +1,16 @@
 package fhj.swengb.assignments.ttt.aseebacher
 
-import java.net.URL
+import java.awt.Desktop
+import java.net.{URI, URL}
 import java.util.ResourceBundle
 import javafx.application.Application
-import javafx.event.ActionEvent
+import javafx.event.{EventHandler, ActionEvent}
 import javafx.fxml.{FXML, FXMLLoader, Initializable}
-import javafx.scene.control.{ToggleGroup, Button, Control}
+import javafx.scene.control.Alert.AlertType
+import javafx.scene.control._
 import javafx.scene.image.{Image, ImageView}
-import javafx.scene.layout.{GridPane, BorderPane}
+import javafx.scene.layout.{FlowPane, GridPane, BorderPane}
+import javafx.scene.web.WebView
 import javafx.scene.{Parent, Scene}
 import javafx.stage.Stage
 import fhj.swengb.assignments.ttt.aseebacher
@@ -164,6 +167,32 @@ class TicTacToeController extends Initializable {
 
   def closeApp(): Unit = {
     javafx.application.Platform.exit()
+  }
+
+  def showAboutWindow(): Unit ={
+    val alert : Alert = new Alert(AlertType.INFORMATION)
+    alert.setTitle("About TicTacToe")
+    alert.setHeaderText("Tic Tac Toe")
+    // http://bekwam.blogspot.co.at/2015/07/dont-just-tell-me-show-me-with-custom.html
+    var fp : FlowPane  = new FlowPane()
+    var lbl : Label = new Label(
+      "This Tic Tac Toe application was developed using Scala and JavaFx 8." + Properties.lineSeparator +
+      "The project repository containg the source code is located at:"
+    )
+    val repoUrl = "https://github.com/andseeb/fhj.swengb.assignments.ttt"
+    var link : Hyperlink = new Hyperlink(repoUrl)
+    fp.getChildren().addAll( lbl, link)
+
+    link.setOnAction(new EventHandler[ActionEvent] {
+      def handle(event: ActionEvent) = {
+        if (Desktop.isDesktopSupported()) {
+          Desktop.getDesktop().browse(new URI(repoUrl))
+        }
+      }
+    })
+
+    alert.getDialogPane().contentProperty().set( fp )
+    alert.showAndWait()
   }
 
 
