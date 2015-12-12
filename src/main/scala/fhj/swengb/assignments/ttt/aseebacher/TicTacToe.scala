@@ -333,7 +333,7 @@ case class TicTacToe(moveHistory: Map[TMove, Player],
     * @param player the player
     * @return
     */
-  def findBestNextMove(player: Player, difficulty:Int = -1, possibleGames: Map[Seq[TMove], TicTacToe]): TMove = {
+  def findBestNextMove(player: Player, possibleGames: Map[Seq[TMove], TicTacToe], difficulty:Int = -1): TMove = {
     println("findBestNextMove difficulty: " + difficulty)
     difficulty match {
       case 1 => remainingMoves.head // random mode
@@ -374,6 +374,7 @@ case class TicTacToe(moveHistory: Map[TMove, Player],
         if (cleanedCanMoveWinMap.nonEmpty) {
           // WIN
           println("can win")
+          //println(cleanedCanMoveWinMap.head._2)
           cleanedCanMoveWinMap.head._1
         } else {
           // Try a draw

@@ -69,22 +69,22 @@ object BoardGenerator {
   }
 
   def main(args: Array[String]) {
-    println(generatePossibleEndStates.map(state => TicTacToe(state)).mkString("\r\n"))
-    println(generatePossibleEndStates.map(state => TicTacToe(state)).size)
+    val possibleGames = generateGames()
+    //println(generatePossibleEndStates.map(state => TicTacToe(state)).mkString("\r\n"))
+    println(possibleGames.values.size)
 
 
+    //println(possibleGames.map(_._2).filter(_.winner.isDefined).filter(_.winner.get._1 == PlayerA))
+    println(possibleGames.values.count(ttt => ttt.winner.isDefined && ttt.winner.get._1 == PlayerA))
 
-    println(generatePossibleEndStates.map(state => TicTacToe(state)).filter(_.winner.isDefined).filter(_.winner.get._1 == PlayerA))
-    println(generatePossibleEndStates.map(state => TicTacToe(state)).filter(_.winner.isDefined).filter(_.winner.get._1 == PlayerA).size)
 
+    //println(possibleGames.map(_._2).filter(_.winner.isDefined).filter(_.winner.get._1 == PlayerB))
+    println(possibleGames.values.count(ttt => ttt.winner.isDefined && ttt.winner.get._1 == PlayerB))
 
-    println(generatePossibleEndStates.map(state => TicTacToe(state)).filter(_.winner.isDefined).filter(_.winner.get._1 == PlayerB))
-    println(generatePossibleEndStates.map(state => TicTacToe(state)).filter(_.winner.isDefined).filter(_.winner.get._1 == PlayerB).size)
+    //println(possibleGames.map(_._2).filter(_.winner.isEmpty))
+    println(possibleGames.values.count(_.winner.isEmpty))
 
-    println(generatePossibleEndStates.map(state => TicTacToe(state)).filter(_.winner.isDefined).filter(_.winner.isDefined).filter(_.winner.get._1 == PlayerNone))
-    println(generatePossibleEndStates.map(state => TicTacToe(state)).filter(_.winner.isDefined).filter(_.winner.get._1 == PlayerNone).size)
-
-    println("test\ntest")
+    //println("test\ntest")
   }
 }
 

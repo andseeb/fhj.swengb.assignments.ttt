@@ -127,7 +127,7 @@ class TicTacToeController extends Initializable {
     }
     // AI magic
     if (!tttInstance.gameOver) {
-      val nextMove = tttInstance.findBestNextMove(PlayerB, difficultyGroup.getSelectedToggle.getUserData.toString.toInt, possibleGames)
+      val nextMove = tttInstance.findBestNextMove(PlayerB, possibleGames, difficultyGroup.getSelectedToggle.getUserData.toString.toInt)
       tttInstance = execMove(nextMove, tttInstance, convertMoveToButton(nextMove))
     }
 
@@ -170,18 +170,18 @@ class TicTacToeController extends Initializable {
     javafx.application.Platform.exit()
   }
 
-  def showAboutWindow(): Unit ={
+  def showAboutWindow(): Unit = {
     val alert : Alert = new Alert(AlertType.INFORMATION)
     alert.setTitle("About TicTacToe")
     alert.setHeaderText("Tic Tac Toe")
     // http://bekwam.blogspot.co.at/2015/07/dont-just-tell-me-show-me-with-custom.html
-    var fp : FlowPane  = new FlowPane()
-    var lbl : Label = new Label(
+    val fp : FlowPane  = new FlowPane()
+    val lbl : Label = new Label(
       "This Tic Tac Toe application was developed using Scala and JavaFx 8." + Properties.lineSeparator +
       "The project repository containg the source code is located at:"
     )
     val repoUrl = "https://github.com/andseeb/fhj.swengb.assignments.ttt"
-    var link : Hyperlink = new Hyperlink(repoUrl)
+    val link : Hyperlink = new Hyperlink(repoUrl)
     fp.getChildren().addAll( lbl, link)
 
     link.setOnAction(new EventHandler[ActionEvent] {
