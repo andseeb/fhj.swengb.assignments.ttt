@@ -5,7 +5,7 @@ import java.util.ResourceBundle
 import javafx.application.Application
 import javafx.event.ActionEvent
 import javafx.fxml.{FXML, FXMLLoader, Initializable}
-import javafx.scene.control.{Button, Control}
+import javafx.scene.control.{ToggleGroup, Button, Control}
 import javafx.scene.image.{Image, ImageView}
 import javafx.scene.layout.BorderPane
 import javafx.scene.{Parent, Scene}
@@ -57,20 +57,18 @@ class TicTacToeController extends Initializable {
   @FXML var BtnBottomLeft : Button = _
   @FXML var BtnBottomCenter : Button = _
   @FXML var BtnBottomRight : Button = _
+  @FXML var difficultyGroup : ToggleGroup = _
   
   
   var tttInstance = TicTacToe()
+  //TODO: lazy??
+  val possibleGames = TicTacToe.mkGames()
 
   override def initialize(location: URL, resources: ResourceBundle): Unit = {
-
-
     val url: String = "about:blank"
     //val url = Students.mfuchs.gitHubUser.avatarUrl.toString
-
     //borderPane.setCenter(new ImageView(new Image(url)))
   }
-
-  //val ttt = TicTacToe()
 
   val movesMap = Map(
     ("btn-topleft", TopLeft),
@@ -99,6 +97,7 @@ class TicTacToeController extends Initializable {
     (BottomRight, BtnBottomRight)
   )
   def convertMoveToButton(move:TMove): Button = {
+    // for some reason, a map doesn't work
     if (move == TopLeft) BtnTopLeft
     else if (move == TopCenter) BtnTopCenter
     else if (move == TopRight) BtnTopRight
@@ -116,9 +115,14 @@ class TicTacToeController extends Initializable {
 
   def processClick(evt:ActionEvent): Unit = {
     // player input
-    if (!tttInstance.gameOver) tttInstance = execMove(movesMap(evt.getSource.asInstanceOf[Button].getId), tttInstance, evt.getSource.asInstanceOf[Button])
+    if (!tttInstance.gameOver) {
+      tttInstance = execMove(movesMap(evt.getSource.asInstanceOf[Button].getId), tttInstance, evt.getSource.asInstanceOf[Button])
+    }
     // AI magic
-    if (!tttInstance.gameOver) tttInstance = execMove(findMove(tttInstance), tttInstance, convertMoveToButton(findMove(tttInstance)))
+    if (!tttInstance.gameOver) {
+      val nextMove = tttInstance.findBestNextMove(PlayerB, difficultyGroup.getSelectedToggle.getUserData.toString.toInt)
+      tttInstance = execMove(nextMove, tttInstance, convertMoveToButton(nextMove))
+    }
 
     if (tttInstance.winner.isDefined) {
       // TODO: einfärben
@@ -144,14 +148,7 @@ class TicTacToeController extends Initializable {
     tttInstance.turn(move, tttInstance.nextPlayer)
   }
 
-  def findMove(tttInstance: TicTacToe): TMove = {
 
-    //def mkGames(): Map[Seq[TMove], TicTacToe]
-    //TicTacToe.mkGames().filter()
-
-
-    tttInstance.remainingMoves.head
-  }
 
 }
 

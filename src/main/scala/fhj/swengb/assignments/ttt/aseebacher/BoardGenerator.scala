@@ -60,7 +60,8 @@ object BoardGenerator {
 
   def generateGames() : Map[Seq[TMove], TicTacToe] = {
     def recMergeAndConvert(entriesLeft:Set[Map[TMove, Player]], curMap:Map[Seq[TMove], TicTacToe] ) : Map[Seq[TMove], TicTacToe] = {
-      if (entriesLeft == Nil) curMap
+      //println(entriesLeft)
+      if (entriesLeft == Set.empty) curMap
       else recMergeAndConvert(entriesLeft.tail, curMap+(entriesLeft.head.filter(_._2 != PlayerNone).keySet.toSeq->TicTacToe(entriesLeft.head)))
     }
 

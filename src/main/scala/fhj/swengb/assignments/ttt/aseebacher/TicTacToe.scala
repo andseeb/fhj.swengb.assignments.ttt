@@ -124,6 +124,7 @@ object TicTacToe {
     * @return
     */
   def apply():TicTacToe = {
+    /*
     def recAddToMap(moves:Seq[TMove], map:Map[TMove, Player]) : Map[TMove, Player] = {
       if (moves == Nil) map
       else recAddToMap(moves.tail, map+(moves.head->PlayerNone))
@@ -134,9 +135,10 @@ object TicTacToe {
                     BottomLeft, BottomCenter, BottomRight),
       Map[TMove, Player]())
     TicTacToe(emptyBoard)
+    */
 
+    TicTacToe(Map[TMove, Player]().withDefaultValue(PlayerNone))
   }
-  //TicTacToe(Map[TMove, Player]().withDefaultValue(PlayerNone))
 
   /**
     * For a given tic tac toe game, this function applies all moves to the game.
@@ -206,16 +208,17 @@ case class TicTacToe(moveHistory: Map[TMove, Player],
     */
   def asString(): String = {
 
-    val gridLine = s"|---|---|---|$Properties.lineSeparator"
+    val gridLine = s"|---|---|---|${Properties.lineSeparator}"
 
     gridLine +
-    s"| ${moveHistory(TopLeft).sign} | ${moveHistory(TopCenter).sign} | ${moveHistory(TopRight).sign} |$Properties.lineSeparator" +
+    s"| ${moveHistory(TopLeft).sign} | ${moveHistory(TopCenter).sign} | ${moveHistory(TopRight).sign} |${Properties.lineSeparator}" +
     gridLine +
-    s"| ${moveHistory(MiddleLeft).sign} | ${moveHistory(MiddleCenter).sign} | ${moveHistory(MiddleRight).sign} |$Properties.lineSeparator" +
+    s"| ${moveHistory(MiddleLeft).sign} | ${moveHistory(MiddleCenter).sign} | ${moveHistory(MiddleRight).sign} |${Properties.lineSeparator}" +
     gridLine +
-    s"| ${moveHistory(BottomLeft).sign} | ${moveHistory(BottomCenter).sign} | ${moveHistory(BottomRight).sign} |$Properties.lineSeparator" +
+    s"| ${moveHistory(BottomLeft).sign} | ${moveHistory(BottomCenter).sign} | ${moveHistory(BottomRight).sign} |${Properties.lineSeparator}" +
     gridLine
   }
+  override def toString() = asString()
 
   /**
     * is true if the game is over.
@@ -235,7 +238,15 @@ case class TicTacToe(moveHistory: Map[TMove, Player],
   /**
     * the moves which are still to be played on this tic tac toe.
     */
-  val remainingMoves: Set[TMove] = moveHistory.filter(_._2 == PlayerNone).keySet
+  val remainingMoves: Set[TMove] = {
+    List(TopLeft, TopCenter, TopRight,
+      MiddleLeft, MiddleCenter, MiddleRight,
+      BottomLeft, BottomCenter, BottomRight
+    ).diff(moveHistory.keySet.toList).toSet
+
+
+
+  }
 
   /**
     * Takes the TicTacToe game and returns all
@@ -267,8 +278,8 @@ case class TicTacToe(moveHistory: Map[TMove, Player],
     }
     def recCheckAll(moves : Seq[TMove]) : Option[(Player, Set[TMove])]  = {
 
-      assert(moves.contains(MiddleCenter) == false && moves.contains(MiddleRight) == false &&
-        moves.contains(BottomCenter) == false && moves.contains(BottomRight) == false)
+      assert(!moves.contains(MiddleCenter) && !moves.contains(MiddleRight) &&
+        !moves.contains(BottomCenter) && !moves.contains(BottomRight))
       if (moves == Nil) None // No winner yet OR draw
       else {
 
@@ -315,6 +326,47 @@ case class TicTacToe(moveHistory: Map[TMove, Player],
     TicTacToe(moveHistory + (move -> nextPlayer), nextPlayer.switch()) //overwrite value of key
   }
 
+
+  /**
+    * returns all possible "game Over" games.
+    *
+    * @param player the player
+    * @return
+    */
+  def findBestNextMove(player: Player, difficulty:Int = -1): TMove = {
+    println("findBestNextMove difficulty: " + difficulty)
+    difficulty match {
+      case 1 => remainingMoves.head // random mode
+      case 2 => { // useless AI mode
+        val possibleGames = TicTacToe.mkGames()
+        // Für jeden verfügb. Move                            //wo PlayerB der Gewinner ist  // und wo schon gleiche Moves sind
+        val bla = remainingMoves.map(move => (move -> possibleGames.filter(_._2.winner.isDefined).filter(_._2.winner.get._1 == PlayerB).filter(b => areAllMovesOfB1InB2(this, b._2))) ) //.filter(_._2.isEmpty == false)
+        //println(bla)
+        if (bla.filter(_._2.isEmpty == false).isEmpty) {
+          // can't win
+          ???
+          //TODO: draw
+          //tttInstance.remainingMoves.head
+        } else {
+          //println(bla.filter(_._2.isEmpty == false).head._1)
+          //println(bla.filter(_._2.isEmpty == false).head._2)
+          bla.filter(_._2.isEmpty == false).head._1
+        }
+
+
+      }
+      case _ => { // default: hard mode
+        //TODO:
+        TopLeft
+      }
+    }
+
+  }
+
+
+  def areAllMovesOfB1InB2(board1: TicTacToe, board2: TicTacToe) : Boolean = {
+    (board1.moveHistory.keySet diff board2.moveHistory.keySet).isEmpty
+  }
+
+
 }
-
-
