@@ -7,13 +7,15 @@ import javafx.event.ActionEvent
 import javafx.fxml.{FXML, FXMLLoader, Initializable}
 import javafx.scene.control.{ToggleGroup, Button, Control}
 import javafx.scene.image.{Image, ImageView}
-import javafx.scene.layout.BorderPane
+import javafx.scene.layout.{GridPane, BorderPane}
 import javafx.scene.{Parent, Scene}
 import javafx.stage.Stage
 import fhj.swengb.assignments.ttt.aseebacher
 import fhj.swengb.assignments.ttt.aseebacher.TMove
 
 
+import scala.compat.Platform
+import scala.util.Properties
 import scala.util.control.NonFatal
 
 object TicTacToeApp {
@@ -58,11 +60,12 @@ class TicTacToeController extends Initializable {
   @FXML var BtnBottomCenter : Button = _
   @FXML var BtnBottomRight : Button = _
   @FXML var difficultyGroup : ToggleGroup = _
+  @FXML var ButtonGrid : GridPane = _
   
   
   var tttInstance = TicTacToe()
   //TODO: lazy??
-  val possibleGames = TicTacToe.mkGames()
+  var possibleGames = TicTacToe.mkGames()
 
   override def initialize(location: URL, resources: ResourceBundle): Unit = {
     val url: String = "about:blank"
@@ -120,7 +123,7 @@ class TicTacToeController extends Initializable {
     }
     // AI magic
     if (!tttInstance.gameOver) {
-      val nextMove = tttInstance.findBestNextMove(PlayerB, difficultyGroup.getSelectedToggle.getUserData.toString.toInt)
+      val nextMove = tttInstance.findBestNextMove(PlayerB, difficultyGroup.getSelectedToggle.getUserData.toString.toInt, possibleGames)
       tttInstance = execMove(nextMove, tttInstance, convertMoveToButton(nextMove))
     }
 
@@ -128,7 +131,7 @@ class TicTacToeController extends Initializable {
       // TODO: einfärben
     }
     if (tttInstance.gameOver) {
-      // TODO: reset button
+      // TODO: add reset button
     }
 
 
@@ -139,6 +142,7 @@ class TicTacToeController extends Initializable {
     println(tttInstance.moveHistory)
     println("has won: " + tttInstance.winner.getOrElse("no"))
     println("game over: " + tttInstance.gameOver)
+    println(Properties.lineSeparator)
 
   }
 
@@ -146,6 +150,20 @@ class TicTacToeController extends Initializable {
     button.setDisable(true)
     button.getStyleClass.add(tttInstance.nextPlayer.toString)
     tttInstance.turn(move, tttInstance.nextPlayer)
+  }
+
+
+  def resetBoard(): Unit = {
+    for (button <- ButtonGrid.getChildren.toArray().toList) {
+      button.asInstanceOf[Button].setDisable(false)
+      button.asInstanceOf[Button].getStyleClass.remove("PlayerA")
+      button.asInstanceOf[Button].getStyleClass.remove("PlayerB")
+    }
+    tttInstance = TicTacToe()
+  }
+
+  def closeApp(): Unit = {
+    javafx.application.Platform.exit()
   }
 
 

@@ -333,12 +333,11 @@ case class TicTacToe(moveHistory: Map[TMove, Player],
     * @param player the player
     * @return
     */
-  def findBestNextMove(player: Player, difficulty:Int = -1): TMove = {
+  def findBestNextMove(player: Player, difficulty:Int = -1, possibleGames: Map[Seq[TMove], TicTacToe]): TMove = {
     println("findBestNextMove difficulty: " + difficulty)
     difficulty match {
       case 1 => remainingMoves.head // random mode
       case 2 => { // useless AI mode
-        val possibleGames = TicTacToe.mkGames()
         // Für jeden verfügb. Move                            //wo PlayerB der Gewinner ist  // und wo schon gleiche Moves sind
         val bla = remainingMoves.map(move => (move -> possibleGames.filter(_._2.winner.isDefined).filter(_._2.winner.get._1 == PlayerB).filter(b => areAllMovesOfB1InB2(this, b._2))) ) //.filter(_._2.isEmpty == false)
         //println(bla)
@@ -356,8 +355,34 @@ case class TicTacToe(moveHistory: Map[TMove, Player],
 
       }
       case _ => { // default: hard mode
-        //TODO:
-        TopLeft
+
+        //check if you can win
+        val winnerGames = possibleGames.values.filter(game => game.winner.isDefined && game.winner.get._1 == player)
+        println(winnerGames.size)
+        val drawGames = possibleGames.values.filter(_.winner == None)
+        println(drawGames.size)
+
+        val map1 = remainingMoves.map(move => (move -> this.turn(move, player)) )
+
+        val canMoveWinMap = for ((move, nextTtt) <- map1) yield {
+          val contextWinnerGames = winnerGames.filter(areAllMovesOfB1InB2(nextTtt, _))
+          (move -> contextWinnerGames)
+        }
+
+        val cleanedCanMoveWinMap = canMoveWinMap.filter(_._2.nonEmpty)
+
+        if (cleanedCanMoveWinMap.nonEmpty) {
+          // WIN
+          println("can win")
+          cleanedCanMoveWinMap.head._1
+        } else {
+          // Try a draw
+          println("CANNOT win")
+          TopLeft
+        }
+
+
+
       }
     }
 
