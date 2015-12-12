@@ -45,6 +45,7 @@ class TicTacToeApp extends javafx.application.Application {
       stage.show()
       stage.setMinWidth(stage.getWidth)
       stage.setMinHeight(stage.getHeight)
+      stage.getIcons().add(new Image(this.getClass().getResourceAsStream("/fhj/swengb/assignments/ttt/icon.png")));
     } catch {
       case NonFatal(e) => e.printStackTrace()
     }
