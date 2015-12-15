@@ -64,10 +64,10 @@ class TicTacToeTest {
   @Test def mkGamesTest(): Unit = {
     // numbers source: https://de.wikipedia.org/wiki/Tic-Tac-Toe#Strategie_und_Taktik
     val possibleGames = TicTacToe.mkGames()
-    assertSame(possibleGames.values.size, 31896)
-    assertSame(possibleGames.values.count(ttt => ttt.winner.isDefined && ttt.winner.get._1 == PlayerA), 16398)
-    assertSame(possibleGames.values.count(ttt => ttt.winner.isDefined && ttt.winner.get._1 == PlayerB), 9738)
-    assertSame(possibleGames.values.count(_.winner.isEmpty), 5760)
+    assertSame(31896, possibleGames.values.size)
+    assertSame(16398, possibleGames.values.count(ttt => ttt.winner.isDefined && ttt.winner.get._1 == PlayerA))
+    assertSame(9738, possibleGames.values.count(ttt => ttt.winner.isDefined && ttt.winner.get._1 == PlayerB))
+    assertSame(5760, possibleGames.values.count(_.winner.isEmpty))
   }
 
 

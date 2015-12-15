@@ -9,9 +9,18 @@
     -fx-border-width: 0;
     -fx-border-color: solid;
     -fx-border-color: black;
+    -fx-background-color: #fff;
 }
 
-.PlayerA:disabled {
+.ttt-grid .button:hover {
+    -fx-background-color: #73d45c;
+}
+
+.ttt-grid .button:disabled {
+    -fx-opacity: 1;
+}
+
+.ttt-grid .PlayerA:disabled {
     -fx-background-image: url("/fhj/swengb/assignments/ttt/cross.png");
     -fx-background-size: 65% 65%;
     -fx-background-repeat: no-repeat, no-repeat;
@@ -20,13 +29,28 @@
 }
 
 
-.PlayerB:disabled {
+.ttt-grid .PlayerB:disabled {
     -fx-background-image: url("/fhj/swengb/assignments/ttt/circle.png");
     -fx-background-size: 65% 65%;
     -fx-background-repeat: no-repeat, no-repeat;
     -fx-background-position: center;
     -fx-opacity: 1;
 }
+
+.ttt-grid .A_winning_move:disabled {
+    -fx-background-color: #0ae657;
+}
+
+
+.ttt-grid .B_winning_move:disabled {
+    -fx-background-color: #ff7b7b;
+}
+
+.ttt-grid .draw:disabled {
+    -fx-background-color: #ffff9b;
+}
+
+
 
 #btn-topleft {
     -fx-border-width: 0 2 2 0; /* top right bottom left*/

@@ -17,6 +17,7 @@ import fhj.swengb.assignments.ttt.aseebacher
 import fhj.swengb.assignments.ttt.aseebacher.TMove
 
 
+import scala.collection.Set
 import scala.compat.Platform
 import scala.util.Properties
 import scala.util.control.NonFatal
@@ -131,11 +132,19 @@ class TicTacToeController extends Initializable {
       tttInstance = execMove(nextMove, tttInstance, convertMoveToButton(nextMove))
     }
 
-    if (tttInstance.winner.isDefined) {
-      // TODO: einfärben
-    }
+
+    // mostly button styling
     if (tttInstance.gameOver) {
-      // TODO: add reset button
+      movesMap.values.map(convertMoveToButton(_)).foreach(_.setDisable(true))
+      if (tttInstance.winner.isDefined && tttInstance.winner.get._1 == PlayerA) {
+        tttInstance.winner.get._2.foreach(convertMoveToButton(_).getStyleClass.add("A_winning_move"))
+      }
+      else if (tttInstance.winner.isDefined && tttInstance.winner.get._1 == PlayerB) {
+        tttInstance.winner.get._2.foreach(convertMoveToButton(_).getStyleClass.add("B_winning_move"))
+      } else {
+        movesMap.values.map(convertMoveToButton(_)).foreach(_.getStyleClass.add("draw"))
+      }
+      showGameOverWindow(tttInstance.winner)
     }
 
 
@@ -160,14 +169,28 @@ class TicTacToeController extends Initializable {
   def resetBoard(): Unit = {
     for (button <- ButtonGrid.getChildren.toArray().toList) {
       button.asInstanceOf[Button].setDisable(false)
-      button.asInstanceOf[Button].getStyleClass.remove("PlayerA")
-      button.asInstanceOf[Button].getStyleClass.remove("PlayerB")
+      button.asInstanceOf[Button].getStyleClass.removeAll("PlayerA", "PlayerB", "A_winning_move", "B_winning_move", "draw")
     }
     tttInstance = TicTacToe()
   }
 
   def closeApp(): Unit = {
     javafx.application.Platform.exit()
+  }
+
+  def showGameOverWindow(winnerOption: Option[(Player, Set[TMove])]) = {
+    val alert : Alert = new Alert(AlertType.INFORMATION)
+    alert.setTitle("Game has ended")
+    if (winnerOption.isDefined && winnerOption.get._1 == PlayerA) {
+      alert.setHeaderText("Congratulations: You won!")
+    }
+    else if (winnerOption.isDefined && winnerOption.get._1 == PlayerB) {
+      alert.setHeaderText("You lost! Reconsider your strategy.")
+    } else {
+      alert.setHeaderText("Draw! Maybe you have better luck next time!")
+    }
+    alert.showAndWait()
+
   }
 
   def showAboutWindow(): Unit = {
