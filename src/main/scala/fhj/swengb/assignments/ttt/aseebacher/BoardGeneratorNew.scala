@@ -47,8 +47,8 @@ object BoardGeneratorNew {
     val nineMoves = movesList.permutations.map(_.take(9)).toSet.map((moves:Seq[TMove]) => (moves -> TicTacToe(mkMoveHistory(moves), mkNextPlayer(moves)))).filter(_._2.gameOver).toMap
 
     val allMoves = fiveMoves ++ sixMoves ++ sevenMoves ++ eightMoves ++ nineMoves
-    println("allmoves.size:")
-    println(allMoves.size)
+    //println("allmoves.size:")
+    //println(allMoves.size)
 
     allMoves
 
