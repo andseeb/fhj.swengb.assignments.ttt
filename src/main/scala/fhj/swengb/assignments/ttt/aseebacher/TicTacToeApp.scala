@@ -4,21 +4,16 @@ import java.awt.Desktop
 import java.net.{URI, URL}
 import java.util.ResourceBundle
 import javafx.application.Application
-import javafx.event.{EventHandler, ActionEvent}
+import javafx.event.{ActionEvent, EventHandler}
 import javafx.fxml.{FXML, FXMLLoader, Initializable}
 import javafx.scene.control.Alert.AlertType
 import javafx.scene.control._
-import javafx.scene.image.{Image, ImageView}
-import javafx.scene.layout.{FlowPane, GridPane, BorderPane}
-import javafx.scene.web.WebView
+import javafx.scene.image.Image
+import javafx.scene.layout.{FlowPane, GridPane}
 import javafx.scene.{Parent, Scene}
 import javafx.stage.Stage
-import fhj.swengb.assignments.ttt.aseebacher
-import fhj.swengb.assignments.ttt.aseebacher.TMove
-
 
 import scala.collection.Set
-import scala.compat.Platform
 import scala.util.Properties
 import scala.util.control.NonFatal
 
@@ -32,7 +27,7 @@ class TicTacToeApp extends javafx.application.Application {
 
 
   val Fxml = "/fhj/swengb/assignments/ttt/TicTacToeApp.fxml"
-  val Css = "fhj/swengb/assignments/ttt/TicTacToeApp.css"
+  val Css = "/fhj/swengb/assignments/ttt/TicTacToeApp.css"
 
   val loader = new FXMLLoader(getClass.getResource(Fxml))
 
@@ -46,7 +41,7 @@ class TicTacToeApp extends javafx.application.Application {
       stage.show()
       stage.setMinWidth(stage.getWidth)
       stage.setMinHeight(stage.getHeight)
-      stage.getIcons().add(new Image(this.getClass().getResourceAsStream("/fhj/swengb/assignments/ttt/icon.png")));
+      stage.getIcons.add(new Image(getClass.getResourceAsStream("/fhj/swengb/assignments/ttt/icon.png")));
     } catch {
       case NonFatal(e) => e.printStackTrace()
     }
@@ -55,6 +50,7 @@ class TicTacToeApp extends javafx.application.Application {
 
 
 class TicTacToeController extends Initializable {
+  val debugMode = false
   @FXML var BtnTopLeft : Button = _
   @FXML var BtnTopCenter : Button = _
   @FXML var BtnTopRight : Button = _
@@ -69,13 +65,10 @@ class TicTacToeController extends Initializable {
   
   
   var tttInstance = TicTacToe()
-  //TODO: lazy??
+
   var possibleGames = TicTacToe.mkGames()
 
   override def initialize(location: URL, resources: ResourceBundle): Unit = {
-    val url: String = "about:blank"
-    //val url = Students.mfuchs.gitHubUser.avatarUrl.toString
-    //borderPane.setCenter(new ImageView(new Image(url)))
   }
 
   val movesMap = Map(
@@ -148,14 +141,15 @@ class TicTacToeController extends Initializable {
     }
 
 
-
-    println(evt.getSource.asInstanceOf[Button].getId + " -> " + movesMap(evt.getSource.asInstanceOf[Button].getId))
-    // TODO: create as junit test
-    println("'" + evt.getSource.asInstanceOf[Button].getStyleClass.toArray.toList.mkString(",") + "'")
-    println(tttInstance.moveHistory)
-    println("has won: " + tttInstance.winner.getOrElse("no"))
-    println("game over: " + tttInstance.gameOver)
-    println(Properties.lineSeparator)
+    if (debugMode) {
+      println(evt.getSource.asInstanceOf[Button].getId + " -> " + movesMap(evt.getSource.asInstanceOf[Button].getId))
+      // TODO: create as junit test
+      println("'" + evt.getSource.asInstanceOf[Button].getStyleClass.toArray.toList.mkString(",") + "'")
+      println(tttInstance.moveHistory)
+      println("has won: " + tttInstance.winner.getOrElse("no"))
+      println("game over: " + tttInstance.gameOver)
+      println(Properties.lineSeparator)
+    }
 
   }
 
@@ -200,22 +194,22 @@ class TicTacToeController extends Initializable {
     // http://bekwam.blogspot.co.at/2015/07/dont-just-tell-me-show-me-with-custom.html
     val fp : FlowPane  = new FlowPane()
     val lbl : Label = new Label(
-      "This Tic Tac Toe application was developed using Scala and JavaFx 8." + Properties.lineSeparator +
+      "This Tic Tac Toe application was developed using Scala and JavaFX 8." + Properties.lineSeparator +
       "The project repository containg the source code is located at:"
     )
     val repoUrl = "https://github.com/andseeb/fhj.swengb.assignments.ttt"
     val link : Hyperlink = new Hyperlink(repoUrl)
-    fp.getChildren().addAll( lbl, link)
+    fp.getChildren.addAll( lbl, link)
 
     link.setOnAction(new EventHandler[ActionEvent] {
       def handle(event: ActionEvent) = {
-        if (Desktop.isDesktopSupported()) {
-          Desktop.getDesktop().browse(new URI(repoUrl))
+        if (Desktop.isDesktopSupported) {
+          Desktop.getDesktop.browse(new URI(repoUrl))
         }
       }
     })
 
-    alert.getDialogPane().contentProperty().set( fp )
+    alert.getDialogPane.contentProperty().set( fp )
     alert.showAndWait()
   }
 

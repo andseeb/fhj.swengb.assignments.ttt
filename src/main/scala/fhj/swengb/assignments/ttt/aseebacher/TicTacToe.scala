@@ -1,10 +1,8 @@
 package fhj.swengb.assignments.ttt.aseebacher
 
 
-import fhj.swengb.assignments.ttt.aseebacher
-
 import scala.collection.Set
-import util.Properties
+import scala.util.Properties
 
 /**
   * models the different moves the game allows
@@ -124,19 +122,6 @@ object TicTacToe {
     * @return
     */
   def apply():TicTacToe = {
-    /*
-    def recAddToMap(moves:Seq[TMove], map:Map[TMove, Player]) : Map[TMove, Player] = {
-      if (moves == Nil) map
-      else recAddToMap(moves.tail, map+(moves.head->PlayerNone))
-    }
-
-    val emptyBoard = recAddToMap(Seq(TopLeft, TopCenter, TopRight,
-                    MiddleLeft, MiddleCenter, MiddleRight,
-                    BottomLeft, BottomCenter, BottomRight),
-      Map[TMove, Player]())
-    TicTacToe(emptyBoard)
-    */
-
     TicTacToe(Map[TMove, Player]().withDefaultValue(PlayerNone))
   }
 
@@ -148,19 +133,7 @@ object TicTacToe {
     * @param moves
     * @return
     */
-  /*def recPlay(t: TicTacToe, moves: Seq[TMove]) : TicTacToe = {
-      if (moves == Nil) t
-      else recPlay(TicTacToe(
-        (t.moveHistory + (moves.head -> t.nextPlayer)), t.nextPlayer.switch()
-      ), moves.tail)
-    }*/
   def play(t: TicTacToe, moves: Seq[TMove]): TicTacToe = {
-    /*def recPlay(t: TicTacToe, moves: Seq[TMove]) : TicTacToe = {
-      if (moves == Nil) t
-      else recPlay(TicTacToe(
-        (t.moveHistory + (moves.head -> t.nextPlayer)), t.nextPlayer.switch()
-      ), moves.tail)
-    }*/
     def recPlay(t: TicTacToe, moves: Seq[TMove]) : TicTacToe = {
       if (moves == Nil) t
       else recPlay(t.turn(moves.head, t.nextPlayer), moves.tail)
@@ -173,14 +146,7 @@ object TicTacToe {
     *
     * @return
     */
-  //lazy val possibleGames: Map[Seq[TMove], TicTacToe] = BoardGenerator.generatePossibleEndStates.map(boardState => Map(boardState.remainingMoves.toSeq -> boardState))
-  //lazy val possibleGames: Set[TicTacToe] = BoardGenerator.generatePossibleEndStates
-
-
-
-
-  // def generatePossibleEndStates() : Set[Map[TMove, Player]] = {
-  def mkGames(): Map[Seq[TMove], TicTacToe] = BoardGenerator.generateGames()
+  def mkGames(): Map[Seq[TMove], TicTacToe] = BoardGeneratorNew.generateGames()
 }
 
 /**
@@ -218,7 +184,7 @@ case class TicTacToe(moveHistory: Map[TMove, Player],
     s"| ${moveHistory(BottomLeft).sign} | ${moveHistory(BottomCenter).sign} | ${moveHistory(BottomRight).sign} |${Properties.lineSeparator}" +
     gridLine
   }
-  override def toString() = asString()
+  override def toString = asString()
 
   /**
     * is true if the game is over.
@@ -254,7 +220,7 @@ case class TicTacToe(moveHistory: Map[TMove, Player],
     * possible turns is taken and added to the set.
     */
   val nextGames: Set[TicTacToe] = {
-    remainingMoves.map((move:TMove) => TicTacToe(moveHistory + (move -> nextPlayer), nextPlayer.switch))
+    remainingMoves.map((move:TMove) => TicTacToe(moveHistory + (move -> nextPlayer), nextPlayer.switch()))
   }
 
   /**
@@ -277,32 +243,21 @@ case class TicTacToe(moveHistory: Map[TMove, Player],
       }
     }
     def recCheckAll(moves : Seq[TMove]) : Option[(Player, Set[TMove])]  = {
-
       assert(!moves.contains(MiddleCenter) && !moves.contains(MiddleRight) &&
         !moves.contains(BottomCenter) && !moves.contains(BottomRight))
       if (moves == Nil) None // No winner yet OR draw
       else {
-
         if (containsSameValidPlayer(moves.head.left, moves.head, moves.head.right).isDefined) {
           Some(moveHistory(moves.head), moveHistory.filter(_._2 == moveHistory(moves.head)).keySet)
         } else if (containsSameValidPlayer(moves.head.up, moves.head, moves.head.down).isDefined) {
           Some(moveHistory(moves.head), moveHistory.filter(_._2 == moveHistory(moves.head)).keySet)
-
-
-
         } else if ((moves.head == TopLeft | moves.head == TopRight | moves.head == BottomLeft) && containsSameValidPlayer(moves.head, diagonalMoves(moves.head)._1, diagonalMoves(moves.head)._2).isDefined) {
           Some(moveHistory(moves.head), moveHistory.filter(_._2 == moveHistory(moves.head)).keySet)
-
-
-
         } else {
           recCheckAll(moves.tail)
         }
-
-
       }
     }
-
     if (moveHistory.size <= 4) None
     else {
       val importantMoves = moveHistory.keySet.filter((move:TMove) => Seq(TopLeft, TopCenter, TopRight, MiddleLeft, BottomLeft).contains(move)).toList
@@ -310,9 +265,6 @@ case class TicTacToe(moveHistory: Map[TMove, Player],
         importantMoves.contains(BottomCenter) == false && importantMoves.contains(BottomRight) == false)
       recCheckAll(importantMoves)
     }
-
-
-
   }
 
   /**
@@ -334,54 +286,20 @@ case class TicTacToe(moveHistory: Map[TMove, Player],
     * @return
     */
   def findBestNextMove(player: Player, possibleGames: Map[Seq[TMove], TicTacToe], difficulty:Int = -1): TMove = {
-    println("findBestNextMove difficulty: " + difficulty)
     difficulty match {
-      case 1 => remainingMoves.head // random mode
-      case 2 => { // useless AI mode
+      case 1 => remainingMoves.head // easy(random) mode
+      case 2 => ??? // hard mode
+      case _ => { // medium difficulty (slow)
         // Für jeden verfügb. Move                            //wo PlayerB der Gewinner ist  // und wo schon gleiche Moves sind
         val bla = remainingMoves.map(move => (move -> possibleGames.filter(_._2.winner.isDefined).filter(_._2.winner.get._1 == PlayerB).filter(b => areAllMovesOfB1InB2(this, b._2))) ) //.filter(_._2.isEmpty == false)
         //println(bla)
         if (bla.filter(_._2.isEmpty == false).isEmpty) {
           // can't win
-          ???
           //TODO: draw
-          //tttInstance.remainingMoves.head
+          remainingMoves.head
         } else {
-          //println(bla.filter(_._2.isEmpty == false).head._1)
-          //println(bla.filter(_._2.isEmpty == false).head._2)
           bla.filter(_._2.isEmpty == false).head._1
         }
-
-
-      }
-      case _ => { // default: hard mode
-
-        //check if you can win
-        val winnerGames = possibleGames.values.filter(game => game.winner.isDefined && game.winner.get._1 == player)
-        println(winnerGames.size)
-        val drawGames = possibleGames.values.filter(_.winner == None)
-        println(drawGames.size)
-
-        val map1 = remainingMoves.map(move => (move -> this.turn(move, player)) )
-
-        val canMoveWinMap = for ((move, nextTtt) <- map1) yield {
-          val contextWinnerGames = winnerGames.filter(areAllMovesOfB1InB2(nextTtt, _))
-          (move -> contextWinnerGames)
-        }
-
-        val cleanedCanMoveWinMap = canMoveWinMap.filter(_._2.nonEmpty)
-
-        if (cleanedCanMoveWinMap.nonEmpty) {
-          // WIN
-          println("can win")
-          //println(cleanedCanMoveWinMap.head._2)
-          cleanedCanMoveWinMap.head._1
-        } else {
-          // Try a draw
-          println("CANNOT win")
-          TopLeft
-        }
-
 
 
       }

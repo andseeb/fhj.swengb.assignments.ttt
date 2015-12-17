@@ -62,12 +62,12 @@ class TicTacToeTest {
 
 
   @Test def mkGamesTest(): Unit = {
-    // numbers source: https://de.wikipedia.org/wiki/Tic-Tac-Toe#Strategie_und_Taktik
-    val possibleGames = TicTacToe.mkGames()
-    assertSame(31896, possibleGames.values.size)
-    assertSame(16398, possibleGames.values.count(ttt => ttt.winner.isDefined && ttt.winner.get._1 == PlayerA))
-    assertSame(9738, possibleGames.values.count(ttt => ttt.winner.isDefined && ttt.winner.get._1 == PlayerB))
-    assertSame(5760, possibleGames.values.count(_.winner.isEmpty))
+    // numbers taken from: https://de.wikipedia.org/wiki/Tic-Tac-Toe#Strategie_und_Taktik
+    val possibleGames = allGames
+    assertSame(255169, possibleGames.values.size)
+    assertSame(131185, possibleGames.values.count(ttt => ttt.winner.isDefined && ttt.winner.get._1 == PlayerA))
+    assertSame(77904, possibleGames.values.count(ttt => ttt.winner.isDefined && ttt.winner.get._1 == PlayerB))
+    assertSame(46080, possibleGames.values.count(_.winner.isEmpty))
   }
 
 
@@ -131,11 +131,10 @@ class TicTacToeTest {
     assertFalse(TicTacToe().areAllMovesOfB1InB2(board1, board2))
   }
 
-
+  /*
   @Test def findBestNextMoveTest(): Unit = {
     val t = TicTacToe.play(TicTacToe(), Seq(BottomCenter, TopLeft, BottomRight, MiddleCenter, TopCenter))
-    val possibleGames: Map[Seq[TMove], TicTacToe] = ???
-    t.findBestNextMove(PlayerB, possibleGames)
-  }
+    t.findBestNextMove(PlayerB, allGames)
+  }*/
 
 }
