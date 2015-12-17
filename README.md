@@ -1,7 +1,7 @@
 # fhj.swengb.assignments.ttt.aseebacher
 ## Tic Tac Toe
 
-3rd assignment for SWENGB course: a tic tac toe game using Scala and JavaFX 8
+3rd assignment for SWENGB course: A Tic Tac Toe game using Scala and JavaFX 8
 
 ![TicTacToe Screenshot](screenshot1.PNG?raw=true)
 
